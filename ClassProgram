@@ -1,0 +1,164 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace menu
+{
+    class Program
+    {
+
+
+
+
+
+        static void Main(string[] args)
+
+        {
+
+            while (true)
+            {
+
+                List<string> menu = new List<string>();
+                menu.Add("Home");
+                menu.Add("Insert");
+                menu.Add("Updata");
+                menu.Add("Delete");
+                int i = 0;
+
+                try
+                {
+
+                    DB_HosseinEntities Db = new DB_HosseinEntities();
+                    foreach (string mnu in menu)
+                    {
+                        i++;
+                        Console.WriteLine($"{i} - {mnu}");
+                    }
+
+
+                    Console.WriteLine($"Please Enter valid intiger (1 till {menu.Count})");
+                    int id = Convert.ToInt32(Console.ReadLine());
+
+                    //Home
+                    if (id == 1)
+                    {
+                        Console.WriteLine("Home :");
+
+                        //var dataset = Db.tb_person.FirstOrDefault();
+                        var dataset = Db.tb_person.ToList();
+
+                        foreach (var item in dataset)
+                        {
+                            Console.WriteLine($"{item.Id} | Name : {item.Name} | Family : {item.Family} | Age : {item.Age} | Address :{item.Address}");
+
+
+
+                        }
+
+
+                        Console.ReadKey();
+                    }
+                    //insert
+                    if (id == 2)
+                    {
+
+
+
+                        try
+                        {
+                            Console.WriteLine("Insert :");
+                            Console.WriteLine("Name :");
+                            string name = Console.ReadLine();
+                            Console.WriteLine("Family :");
+                            string family = Console.ReadLine();
+                            Console.WriteLine("Address :");
+                            string address = Console.ReadLine();
+                            Console.WriteLine("Age ( intiger ) :");
+                            int age = Convert.ToInt32(Console.ReadLine());
+
+                            tb_person Person = new tb_person()
+                            {
+                                Name = name,
+                                Family = family,
+                                Address = address,
+                                Age = age
+
+
+                            };
+
+                            Db.tb_person.Add(Person);
+                            Db.SaveChanges();
+
+
+                        }
+
+                        catch
+                        {
+                            Console.WriteLine("please enter intiger.");
+
+                            Console.WriteLine("Entery any kye for back to Menu;");
+                            Console.ReadKey();
+
+                        }
+
+
+
+                        Console.ReadKey();
+                    }
+                    //update
+                    if (id == 3)
+                    {
+                        Console.WriteLine("Updata :");
+                       
+
+                        Console.WriteLine("enter number for Update row :");
+                        int update = Convert.ToInt32(Console.ReadLine());
+                        tb_person pers = Db.tb_person.FirstOrDefault(c => c.Id == update);
+                        Console.WriteLine("new Name :");
+                        pers.Name = Console.ReadLine();
+                        Console.WriteLine("new Family :");
+                        pers.Family = Console.ReadLine();
+                        Console.WriteLine("new Address :");
+                        pers.Address = Console.ReadLine();
+                        Console.WriteLine("new Age :");
+                        pers.Age = Convert.ToInt32(Console.ReadLine());
+
+                        Db.SaveChanges();
+                        Console.ReadKey();
+                    }
+                    //delete
+                    if (id == 4)
+                    {
+                        Console.WriteLine("Delete :");
+
+                        Console.WriteLine("enter number for remove row :");
+                        int delet = Convert.ToInt32(Console.ReadLine());
+                        tb_person pers = Db.tb_person.FirstOrDefault(c => c.Id == delet);
+                        Db.tb_person.Remove(pers);
+                        Db.SaveChanges();
+
+                        Console.ReadKey();
+                    }
+                    if (id > menu.Count)
+                    {
+                        Console.WriteLine($"Not valid ;Please Enter valid intiger (1 till {menu.Count})");
+                        Console.WriteLine("Entery any kye for back to Menu;");
+                        Console.ReadKey();
+                    }
+
+
+                }
+                catch
+                {
+                    Console.WriteLine($"Not valid ;Please Enter valid intiger (1 till {menu.Count})");
+                    Console.WriteLine("Entery any kye for back to Menu;");
+                    Console.ReadKey();
+                }
+            }
+        }
+
+
+    }
+}
