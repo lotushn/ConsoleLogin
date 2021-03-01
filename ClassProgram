@@ -1,3 +1,5 @@
+//Update 3/1/2021
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,12 +21,14 @@ namespace menu
 
             while (true)
             {
+// creat menu with genereic list
 
                 List<string> menu = new List<string>();
-                menu.Add("Home");
+                menu.Add("select");
                 menu.Add("Insert");
                 menu.Add("Updata");
                 menu.Add("Delete");
+                menu.Add("Search");
                 int i = 0;
 
                 try
@@ -41,12 +45,12 @@ namespace menu
                     Console.WriteLine($"Please Enter valid intiger (1 till {menu.Count})");
                     int id = Convert.ToInt32(Console.ReadLine());
 
-                    //Home
+                    //Select
                     if (id == 1)
                     {
                         Console.WriteLine("Home :");
 
-                        //var dataset = Db.tb_person.FirstOrDefault();
+
                         var dataset = Db.tb_person.ToList();
 
                         foreach (var item in dataset)
@@ -70,28 +74,53 @@ namespace menu
                         {
                             Console.WriteLine("Insert :");
                             Console.WriteLine("Name :");
+
+
                             string name = Console.ReadLine();
-                            Console.WriteLine("Family :");
-                            string family = Console.ReadLine();
-                            Console.WriteLine("Address :");
-                            string address = Console.ReadLine();
-                            Console.WriteLine("Age ( intiger ) :");
-                            int age = Convert.ToInt32(Console.ReadLine());
-
-                            tb_person Person = new tb_person()
+                            if (name == "")
                             {
-                                Name = name,
-                                Family = family,
-                                Address = address,
-                                Age = age
+                                Console.WriteLine("Name - cant emepty- enter any keys for back to menu");
+                            }
+                            else
+                            {
+                                Console.WriteLine("Family :");
+                                string family = Console.ReadLine();
+                                if (family == "")
+                                {
+                                    Console.WriteLine("Family - cant emepty- enter any keys for back to menu");
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Address :");
+                                    string address = Console.ReadLine();
+
+                                    if (address == "")
+                                    {
+                                        Console.WriteLine("Address - cant emepty- enter any keys for back to menu");
+                                    }
+                                    else
+                                    {
 
 
-                            };
-
-                            Db.tb_person.Add(Person);
-                            Db.SaveChanges();
+                                        Console.WriteLine("Age ( intiger ) :");
+                                        int age = Convert.ToInt32(Console.ReadLine());
 
 
+                                        tb_person Person = new tb_person()
+                                        {
+                                            Name = name,
+                                            Family = family,
+                                            Address = address,
+                                            Age = age
+
+
+                                        };
+
+                                        Db.tb_person.Add(Person);
+                                        Db.SaveChanges();
+                                    }
+                                }
+                            }
                         }
 
                         catch
@@ -111,22 +140,93 @@ namespace menu
                     if (id == 3)
                     {
                         Console.WriteLine("Updata :");
-                       
 
-                        Console.WriteLine("enter number for Update row :");
-                        int update = Convert.ToInt32(Console.ReadLine());
-                        tb_person pers = Db.tb_person.FirstOrDefault(c => c.Id == update);
-                        Console.WriteLine("new Name :");
-                        pers.Name = Console.ReadLine();
-                        Console.WriteLine("new Family :");
-                        pers.Family = Console.ReadLine();
-                        Console.WriteLine("new Address :");
-                        pers.Address = Console.ReadLine();
-                        Console.WriteLine("new Age :");
-                        pers.Age = Convert.ToInt32(Console.ReadLine());
+                        try
+                        {
 
-                        Db.SaveChanges();
-                        Console.ReadKey();
+
+
+                            // check for empety input;
+
+
+                            Console.WriteLine("enter number for Update row :");
+                            int update = Convert.ToInt32(Console.ReadLine());
+
+
+
+                            tb_person pers = Db.tb_person.FirstOrDefault(c => c.Id == update);
+                            Console.WriteLine("new Name :");
+                            string name = Console.ReadLine();
+
+                            if (name == "")
+                            {
+
+                                name = pers.Name;
+                                Console.WriteLine($"submit - Old Name {name}");
+                                pers.Name = name;
+                            }
+                            else
+                            {
+                                pers.Name = name;
+                            }
+
+                            Console.WriteLine("new Family :");
+                            string family = Console.ReadLine();
+                            if (family == "")
+                            {
+                                family = pers.Family;
+                                Console.WriteLine($"submit - Old Family {family}");
+                                pers.Family = family;
+                            }
+                            else
+                            {
+                                pers.Family = family;
+                            }
+
+                            Console.WriteLine("new Address :");
+                            string address = Console.ReadLine();
+
+                            if (address == "")
+                            {
+                                address = pers.Address;
+                                Console.WriteLine($"submit - Old Address {address}");
+                                pers.Address = address;
+                            }
+                            else
+                            {
+                                pers.Address = address;
+                            }
+
+                            Console.WriteLine("new Age :");
+                            int age = Convert.ToInt32(Console.ReadLine());
+                            if (age == 0)
+                            {
+                                age = Convert.ToInt32(pers.Age);
+                                Console.WriteLine($"submit - Old Age {age}");
+                                pers.Age = age;
+                            }
+                            else
+                            {
+                                pers.Age = age;
+                            }
+
+
+
+
+
+
+                            Db.SaveChanges();
+                            Console.ReadKey();
+
+                        }
+                        catch
+                        {
+
+                            Console.WriteLine("age or id can not empty ; You can Enter 0 then this is cant change ");
+                            Console.WriteLine("Entery any kye's for back to Menu and try again");
+                            Console.ReadKey();
+                        }
+
                     }
                     //delete
                     if (id == 4)
@@ -141,6 +241,137 @@ namespace menu
 
                         Console.ReadKey();
                     }
+                    //search 
+                    if (id == 5)
+                    {
+                        Console.WriteLine("search :");
+
+                        Console.WriteLine("choise number for searching");
+                        Console.WriteLine("1- search with id");
+                        Console.WriteLine("2- search with name");
+                        Console.WriteLine("3- search with family");
+                        Console.WriteLine("4- search with address");
+                        Console.WriteLine("5- search with age");
+                        int chois = Convert.ToInt32(Console.ReadLine());
+                        // 1- search with id
+                        if (chois == 1)
+                        {
+                            try
+                            {
+                                Console.WriteLine("enter id :");
+                                int ID = Convert.ToInt32(Console.ReadLine());
+                                tb_person pers = Db.tb_person.FirstOrDefault(c => c.Id == ID);
+
+                                Console.WriteLine($"result :Id : {pers.Id} | Name : {pers.Name} | Family : {pers.Family} ");
+                                Console.WriteLine($"| Age : {pers.Age} | Address :{pers.Address}");
+                            }
+                            catch
+                            {
+                                Console.WriteLine(" result : can not find him/her");
+
+                            }
+
+                        }
+                        //2- search with name
+                        if (chois == 2)
+                        {
+                            Console.WriteLine("enter name :");
+                            string Name = Console.ReadLine();
+
+                            var search = Db.tb_person.Where(c => c.Name == Name).ToList();
+                            if (search.Count != 0)
+                            {
+                                Console.WriteLine("result :");
+                                foreach (var item in search)
+                                {
+                                    Console.WriteLine($" :Id : {item.Id} | Name : {item.Name} | Family : {item.Family} ");
+                                    Console.WriteLine($"| Age : {item.Age} | Address :{item.Address}");
+                                }
+
+                            }
+                            else
+                            {
+                                Console.WriteLine($" result : can not find him/her");
+                            }
+
+                        }
+
+                        //3- search with family
+                        if (chois == 3)
+                        {
+                            Console.WriteLine("enter fname :");
+                            string family = Console.ReadLine();
+
+                            var search = Db.tb_person.Where(c => c.Family == family).ToList();
+                            if (search.Count != 0)
+                            {
+                                Console.WriteLine("result :");
+                                foreach (var item in search)
+                                {
+                                    Console.WriteLine($" :Id : {item.Id} | Name : {item.Name} | Family : {item.Family} ");
+                                    Console.WriteLine($"| Age : {item.Age} | Address :{item.Address}");
+                                }
+
+                            }
+                            else
+                            {
+                                Console.WriteLine($" result : can not find him/her");
+                            }
+
+                        }
+                        //4- search with address
+                        if (chois == 4)
+                        {
+                            Console.WriteLine("enter address :");
+                            string address = Console.ReadLine();
+
+                            var search = Db.tb_person.Where(c => c.Address == address).ToList();
+                            if (search.Count != 0)
+                            {
+                                Console.WriteLine("result :");
+                                foreach (var item in search)
+                                {
+                                    Console.WriteLine($" :Id : {item.Id} | Name : {item.Name} | Family : {item.Family} ");
+                                    Console.WriteLine($"| Age : {item.Age} | Address :{item.Address}");
+                                }
+
+                            }
+                            else
+                            {
+                                Console.WriteLine($" result : can not find him/her");
+                            }
+
+                        }
+                        //5- search with age
+                        if (chois == 5)
+                        {
+
+                            Console.WriteLine("enter age :");
+                            int age = Convert.ToInt32(Console.ReadLine());
+                            var search = Db.tb_person.Where(c => c.Age == age).ToList();
+                            Console.WriteLine("result :");
+                            if (search.Count != 0)
+                            {
+                                foreach (var item in search)
+                                {
+                                    Console.WriteLine($" :Id : {item.Id} | Name : {item.Name} | Family : {item.Family} ");
+                                    Console.WriteLine($"| Age : {item.Age} | Address :{item.Address}");
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine(" result : can not find him/her");
+
+                            }
+
+                        }
+
+
+                        Console.ReadKey();
+                    }
+
+                    // this is for error out of count menu ()
+
                     if (id > menu.Count)
                     {
                         Console.WriteLine($"Not valid ;Please Enter valid intiger (1 till {menu.Count})");
@@ -149,7 +380,12 @@ namespace menu
                     }
 
 
+
+
                 }
+
+
+                // this is for error out of number (try catch)
                 catch
                 {
                     Console.WriteLine($"Not valid ;Please Enter valid intiger (1 till {menu.Count})");
