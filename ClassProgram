@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 
 
-// careful ! if u want copy past project ! u should writ your name space project Instead "ConsoleApp1"  
+// careful ! if u want copy paste project ! u should writ your name space project Instead "ConsoleApp1"  
 namespace ConsoleApp1
 {
     class Program
